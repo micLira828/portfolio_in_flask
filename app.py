@@ -8,14 +8,20 @@ db = SQLAlchemy()
 migrate = Migrate()
 
 def create_app():
-    app = Flask(__name__, static_folder="static")
+    # IMPORTANT: allow Flask to access /instance folder
+    app = Flask(__name__, 
+                static_folder="static",
+                instance_relative_config=True)
+
+    # Load database settings
     app.config.from_object(Config)
 
-    CORS(app)
+    # Initialize extensions
     db.init_app(app)
     migrate.init_app(app, db)
+    CORS(app)
 
-    # Temporary test route — just to confirm the app runs
+    # Test route
     @app.route("/")
     def index():
         return "Portfolio backend is running!"
