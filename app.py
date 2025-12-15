@@ -17,9 +17,13 @@ def create_app():
     app.config.from_object(Config)
 
     # Initialize extensions
+   
+    CORS(app)
     db.init_app(app)
     migrate.init_app(app, db)
-    CORS(app)
+    
+    from routes.projects_routes import projects_routes
+    app.register_blueprint(projects_routes)
 
     # Test route
     @app.route("/")

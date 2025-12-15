@@ -12,3 +12,15 @@ class Project(db.Model):
     github_url = db.Column(db.String(500))
     live_url = db.Column(db.String(500))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "description": self.description,
+            "github_url": self.github_url,
+            "live_url": self.live_url,
+            "image_url": self.image_url,
+            "created_at": self.created_at.isoformat()
+        }
+
