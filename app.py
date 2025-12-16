@@ -23,7 +23,10 @@ def create_app():
     migrate.init_app(app, db)
     
     from routes.projects_routes import projects_routes
+    from routes.nutshell_routes import nutshell_routes
+    
     app.register_blueprint(projects_routes)
+    app.register_blueprint(nutshell_routes)
 
     # Test route
     @app.route("/")
