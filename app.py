@@ -24,9 +24,11 @@ def create_app():
     
     from routes.projects_routes import projects_routes
     from routes.nutshell_routes import nutshell_routes
+    from routes.messages_routes import messages_routes
     
     app.register_blueprint(projects_routes)
     app.register_blueprint(nutshell_routes)
+    app.register_blueprint(messages_routes)
 
     # Test route
     @app.route("/")
