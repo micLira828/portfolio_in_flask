@@ -38,9 +38,9 @@ with app.app_context():
 
     print("Seeding nutshell facts...")
 
-    f1 = Nutshell(content="I create aesthetic-coded digital interfaces.")
-    f2 = Nutshell(content="I love structured workflows like schemas, boards, and planners.")
-    f3 = Nutshell(content="I design both APIs and beautiful frontends — the full stack magic!")
+    f1 = Nutshell(title="What I Create", content="I create aesthetic-coded digital interfaces.")
+    f2 = Nutshell(title= "How I work", content="I love structured workflows like schemas, boards, and planners.")
+    f3 = Nutshell(title="I am full stack", content="I design both APIs and beautiful frontends — the full stack magic!")
 
     
     print("Seeding example contact message...")
