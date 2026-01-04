@@ -21,6 +21,7 @@ with app.app_context():
             "and a polished professional aesthetic. Includes responsive design suitable "
             "for client-facing presentations."
         ),
+        image_url = "/assets/projects/identi.png",
         github_url="https://github.com/miclira828/IdentiLandingPage",
         live_url="https://miclira828.github.io/IdentiLandingPage/"
     )
@@ -32,6 +33,7 @@ with app.app_context():
             "Features a modern, responsive layout and floating contact icons. "
             "Designed to showcase strong visual structure and brand-consistent presentation."
         ),
+        image_url = "/assets/projects/marketing_page.png",
         github_url="https://github.com/miclira828/Marketing-Page",
         live_url="https://miclira828.github.io/Marketing-Page/"
     )
