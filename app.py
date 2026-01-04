@@ -18,7 +18,7 @@ def create_app():
 
     # Initialize extensions
    
-    CORS(app, supports_credentials=true)
+    CORS(app, supports_credentials=True)
     db.init_app(app)
     migrate.init_app(app, db)
     
