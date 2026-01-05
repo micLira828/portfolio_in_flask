@@ -1,11 +1,13 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_mail import Mail
 from flask_cors import CORS
 from config import Config
 
 db = SQLAlchemy()
 migrate = Migrate()
+mail = Mail()
 
 def create_app():
     # IMPORTANT: allow Flask to access /instance folder
@@ -21,6 +23,7 @@ def create_app():
     CORS(app, supports_credentials=True)
     db.init_app(app)
     migrate.init_app(app, db)
+    mail.init_app(app)
     
     from routes.projects_routes import projects_routes
     from routes.nutshell_routes import nutshell_routes
