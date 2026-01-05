@@ -1,6 +1,9 @@
 from flask import Blueprint, request, jsonify
 from models.message import Message
 from app import db
+from flask_mail import Message
+from app import mail as MailMessage
+
 
 messages_routes = Blueprint(
     "messages",
@@ -30,6 +33,21 @@ def create_message():
 
     db.session.add(message)
     db.session.commit()
+    
+    msg = MailMessage(
+    subject=f"New Portfolio Message from {data['name']}",
+    recipients=["YOUR_EMAIL@gmail.com"],
+    body=f"""
+   Name: {data['name']}
+   Email: {data['email']}
+
+   Message:
+   {data['message']}
+   """
+   )
+
+    mail.send(msg)
+
 
     return jsonify({
         "message": "Message sent successfully"
