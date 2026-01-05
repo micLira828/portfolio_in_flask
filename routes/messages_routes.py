@@ -15,43 +15,35 @@ messages_routes = Blueprint(
 def create_message():
     data = request.get_json()
 
-    if not data:
-        return jsonify({"error": "Invalid JSON"}), 400
-
     name = data.get("name")
     email = data.get("email")
     message_text = data.get("message")
 
-    if not name or not email or not message:
-        return jsonify({"error": "All fields are required"}), 400
+    if not name or not email or not message_text:
+    return jsonify({"error": "All fields are required"}), 400
 
     new_message = Message(
-        name=name,
-        email=email,
-        message=message_text
+    name=name,
+    email=email,
+    message=message_text
     )
 
     db.session.add(new_message)
     db.session.commit()
-    
+
     msg = MailMessage(
-    subject=f"New Portfolio Message from {data['name']}",
-    recipients=["plantseedsmic1345@gmail.com"],
+    subject=f"New Portfolio Message from {name}",
+    sender=current_app.config["MAIL_USERNAME"],
+    recipients=[current_app.config["MAIL_USERNAME"]],
     body=f"""
-   Name: {data['name']}
-   Email: {data['email']}
+    Name: {name}
+    Email: {email}
 
-   Message:
-   {data['message']}
-   """
-   )
+    Message:
+    {message_text}
+    """
+    )
 
-   try:
-     mail.send(msg)
-   except Exception as e:
-     print ("Email failed", e)
+    mail.send(msg)
 
-
-    return jsonify({
-        "message": "Message sent successfully"
-    }), 201
+    return jsonify({"message": "Message sent successfully"}), 201
