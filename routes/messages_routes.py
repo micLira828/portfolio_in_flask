@@ -20,23 +20,23 @@ def create_message():
 
     name = data.get("name")
     email = data.get("email")
-    message = data.get("message")
+    message_text = data.get("message")
 
     if not name or not email or not message:
         return jsonify({"error": "All fields are required"}), 400
 
-    message = Message(
+    new_message = Message(
         name=name,
         email=email,
-        message=message
+        message=message_text
     )
 
-    db.session.add(message)
+    db.session.add(new_message)
     db.session.commit()
     
     msg = MailMessage(
     subject=f"New Portfolio Message from {data['name']}",
-    recipients=["YOUR_EMAIL@gmail.com"],
+    recipients=["plantseedsmic1345@gmail.com"],
     body=f"""
    Name: {data['name']}
    Email: {data['email']}
@@ -46,7 +46,10 @@ def create_message():
    """
    )
 
-    mail.send(msg)
+   try:
+     mail.send(msg)
+   except Exception as e:
+     print ("Email failed", e)
 
 
     return jsonify({
