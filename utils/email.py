@@ -19,6 +19,6 @@ def send_contact_email(name, email, message):
     <p>{message}</p>
     """
     }
-)
+    )
 
-response.raise_for_status()
+    response.raise_for_status()
