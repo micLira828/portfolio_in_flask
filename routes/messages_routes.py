@@ -1,7 +1,7 @@
-from flask import Blueprint, request, jsonify, current_app
+from flask import Blueprint, request, jsonify
+from utils.email import send_contact_email
 from models.message import Message as DBMessage
-from flask_mail import Message as MailMessage
-from app import db, mail 
+from app import db
 from datetime import datetime
 
 
@@ -11,38 +11,30 @@ messages_routes = Blueprint(
     url_prefix="/api/messages"
 )
 
-@messages_routes.route("", methods=["POST", "OPTIONS"])
+@messages_routes.route("", methods=["POST"])
 def create_message():
-    if request.method == "OPTIONS":
-        return jsonify({}), 200
     data = request.get_json()
+
     name = data.get("name")
     email = data.get("email")
     message = data.get("message")
 
     if not name or not email or not message:
-        return jsonify({"error": "All fields are required"}), 400
+    return jsonify({"error": "All fields are required"}), 400
 
     new_message = DBMessage(
     name=name,
     email=email,
-    message=message,
-    created_at=datetime.utcnow()
+    message=message
     )
 
     db.session.add(new_message)
     db.session.commit()
 
-    # EMAIL SHOULD NEVER CRASH THE REQUEST
+    # Send email safely (non-blocking API call)
     try:
-        msg = MailMessage(
-        subject=f"New Portfolio Message from {name}",
-        sender=current_app.config["MAIL_USERNAME"],
-        recipients=[current_app.config["MAIL_USERNAME"]],
-        body=f"From: {name} <{email}>\n\n{message}"
-        )
-        mail.send(msg)
+        send_email(name, email, message)
     except Exception as e:
-        print("Email failed:", e)
+        print("Email error:", e)
 
     return jsonify({"success": True}), 201
