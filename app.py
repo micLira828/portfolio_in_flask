@@ -22,8 +22,8 @@ def create_app():
    
     CORS(
             app, 
-            resources={r"/api/*":{"origins": "https://micLira828.github.io"}},
-            supports_credentials=True
+            resources={r"/api/*":{"origins": "https://miclira828.github.io"}},
+            # supports_credentials=True
         )
     db.init_app(app)
     migrate.init_app(app, db)
@@ -35,7 +35,7 @@ def create_app():
     
     app.register_blueprint(projects_routes)
     app.register_blueprint(nutshell_routes)
-    app.register_blueprint(messages_routes)
+    app.register_blueprint(messages_routes, url_prefix="/api/messages")
 
     # Test route
     @app.route("/")
