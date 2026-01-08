@@ -11,7 +11,7 @@ messages_routes = Blueprint(
     url_prefix="/api/messages"
 )
 
-@messages_routes.route("/", methods=["POST"])
+@messages_routes.route("", methods=["POST"])
 def create_message():
     data = request.get_json()
 
