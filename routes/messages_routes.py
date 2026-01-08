@@ -25,7 +25,8 @@ def create_message():
     new_message = DBMessage(
     name=name,
     email=email,
-    message=message
+    message=message,
+    created_at=datetime.utcnow()
     )
 
     db.session.add(new_message)
