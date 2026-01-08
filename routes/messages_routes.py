@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify, current_app
 from models.message import Message as DBMessage
 from flask_mail import Message as MailMessage
 from app import db, mail 
+from datetime import datetime
 
 
 messages_routes = Blueprint(
