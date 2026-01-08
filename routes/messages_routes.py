@@ -12,8 +12,9 @@ messages_routes = Blueprint(
 
 @messages_routes.route("", methods=["POST", "OPTIONS"])
 def create_message():
+    if request.method == "OPTIONS":
+        return "", 204
     data = request.get_json()
-
     name = data.get("name")
     email = data.get("email")
     message_text = data.get("message")
