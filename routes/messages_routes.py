@@ -17,7 +17,7 @@ def create_message():
     data = request.get_json()
     name = data.get("name")
     email = data.get("email")
-    message_text = data.get("message")
+    message = data.get("message")
 
     if not name or not email or not message_text:
         return jsonify({"error": "All fields are required"}), 400
@@ -25,7 +25,7 @@ def create_message():
     new_message = DBMessage(
     name=name,
     email=email,
-    message=message_text
+    message=message
     )
 
     db.session.add(new_message)
@@ -37,7 +37,7 @@ def create_message():
         subject=f"New Portfolio Message from {name}",
         sender=current_app.config["MAIL_USERNAME"],
         recipients=[current_app.config["MAIL_USERNAME"]],
-        body=f"From: {name} <{email}>\n\n{message_text}"
+        body=f"From: {name} <{email}>\n\n{message}"
         )
         mail.send(msg)
     except Exception as e:
