@@ -20,7 +20,7 @@ def create_message():
     message = data.get("message")
 
     if not name or not email or not message:
-    return jsonify({"error": "All fields are required"}), 400
+        return jsonify({"error": "All fields are required"}), 400
 
     new_message = DBMessage(
     name=name,
