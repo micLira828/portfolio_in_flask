@@ -1,8 +1,7 @@
-from flask import Blueprint, request, jsonify
-from models.message import Message
-from app import db
-from flask_mail import Message
-from app import mail as MailMessage
+from flask import Blueprint, request, jsonify, current_app
+from models.message import Message as DBMessage
+from flask_mail import Message as MailMessage
+from app import db, mail 
 
 
 messages_routes = Blueprint(
@@ -11,39 +10,36 @@ messages_routes = Blueprint(
     url_prefix="/api/messages"
 )
 
-@messages_routes.route("", methods=["POST"])
+@messages_routes.route(" ", methods=["POST"])
 def create_message():
-    data = request.get_json()
+data = request.get_json()
 
-    name = data.get("name")
-    email = data.get("email")
-    message_text = data.get("message")
+name = data.get("name")
+email = data.get("email")
+message_text = data.get("message")
 
-    if not name or not email or not message_text:
-        return jsonify({"error": "All fields are required"}), 400
+if not name or not email or not message_text:
+return jsonify({"error": "All fields are required"}), 400
 
-    new_message = Message(
-    name=name,
-    email=email,
-    message=message_text
-    )
+new_message = DBMessage(
+name=name,
+email=email,
+message=message_text
+)
 
-    db.session.add(new_message)
-    db.session.commit()
+db.session.add(new_message)
+db.session.commit()
 
-    msg = MailMessage(
-    subject=f"New Portfolio Message from {name}",
-    sender=current_app.config["MAIL_USERNAME"],
-    recipients=[current_app.config["MAIL_USERNAME"]],
-    body=f"""
-    Name: {name}
-    Email: {email}
+# EMAIL SHOULD NEVER CRASH THE REQUEST
+try:
+msg = MailMessage(
+subject=f"New Portfolio Message from {name}",
+sender=current_app.config["MAIL_USERNAME"],
+recipients=[current_app.config["MAIL_USERNAME"]],
+body=f"From: {name} <{email}>\n\n{message_text}"
+)
+mail.send(msg)
+except Exception as e:
+print("Email failed:", e)
 
-    Message:
-    {message_text}
-    """
-    )
-
-    mail.send(msg)
-
-    return jsonify({"message": "Message sent successfully"}), 201
+return jsonify({"success": True}), 201
