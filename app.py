@@ -22,8 +22,8 @@ def create_app():
    
     CORS(
             app, 
-            resources={r"/api/*":{"origins": ["https://micLira828.github.io"]}},
-            supports_credentials=False
+            resources={r"/api/*":{"origins": "https://micLira828.github.io"}},
+            supports_credentials=True
         )
     db.init_app(app)
     migrate.init_app(app, db)
