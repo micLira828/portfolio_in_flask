@@ -19,7 +19,7 @@ def create_message():
     message_text = data.get("message")
 
     if not name or not email or not message_text:
-    return jsonify({"error": "All fields are required"}), 400
+        return jsonify({"error": "All fields are required"}), 400
 
     new_message = DBMessage(
     name=name,
@@ -32,14 +32,14 @@ def create_message():
 
     # EMAIL SHOULD NEVER CRASH THE REQUEST
     try:
-    msg = MailMessage(
-    subject=f"New Portfolio Message from {name}",
-    sender=current_app.config["MAIL_USERNAME"],
-    recipients=[current_app.config["MAIL_USERNAME"]],
-    body=f"From: {name} <{email}>\n\n{message_text}"
-    )
-    mail.send(msg)
+        msg = MailMessage(
+        subject=f"New Portfolio Message from {name}",
+        sender=current_app.config["MAIL_USERNAME"],
+        recipients=[current_app.config["MAIL_USERNAME"]],
+        body=f"From: {name} <{email}>\n\n{message_text}"
+        )
+        mail.send(msg)
     except Exception as e:
-    print("Email failed:", e)
+        print("Email failed:", e)
 
     return jsonify({"success": True}), 201
