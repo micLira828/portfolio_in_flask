@@ -20,7 +20,10 @@ def create_app():
 
     # Initialize extensions
    
-    CORS(app, supports_credentials=True)
+    CORS(
+            app, 
+            resources={r"/api/*":{"origins": "https://micLira828.github.io"}}
+        )
     db.init_app(app)
     migrate.init_app(app, db)
     mail.init_app(app)
