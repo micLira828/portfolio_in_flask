@@ -14,13 +14,13 @@ messages_routes = Blueprint(
 @messages_routes.route("", methods=["POST", "OPTIONS"])
 def create_message():
     if request.method == "OPTIONS":
-        return "", 204
+        return jsonify({}), 200
     data = request.get_json()
     name = data.get("name")
     email = data.get("email")
     message = data.get("message")
 
-    if not name or not email or not message_text:
+    if not name or not email or not message:
         return jsonify({"error": "All fields are required"}), 400
 
     new_message = DBMessage(
