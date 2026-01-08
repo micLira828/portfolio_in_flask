@@ -33,7 +33,7 @@ def create_message():
 
     # Send email safely (non-blocking API call)
     try:
-        send_email(name, email, message)
+        send_contact_email(name, email, message)
     except Exception as e:
         print("Email error:", e)
 
